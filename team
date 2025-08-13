@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zero Config</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .taskbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      padding: 10px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #333;
+      font-size: 14px;
+      color: #aaa;
+      font-family: 'Courier New', monospace;
+      z-index: 10;
+    }
+
+    .scam-tag {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .scam-tag a {
+      color: #aaa;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .scam-tag a:hover {
+      color: white;
+    }
+
+    .time {
+      font-family: 'Courier New', monospace;
+      letter-spacing: 1px;
+    }
+
+    .center-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .credits-section {
+      margin: 30px 0;
+      width: 80%;
+      max-width: 800px;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: white;
+      text-transform: uppercase;
+    }
+
+    .boxes-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .box {
+      width: 120px;
+      height: 60px;
+      background-color: #333;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .box:hover {
+      background-color: #444;
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    .footer-ip {
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      padding: 10px;
+      border-top: 1px solid #333;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="taskbar">
+    <div class="scam-tag">
+      <a onclick="window.location.reload()">Home</a>
+      <a onclick="window.location.reload()">Pastes</a>
+      <a onclick="window.location.reload()">Tools</a>
+    </div>
+    <div class="time" id="time">00:00:00</div>
+  </div>
+
+  <div class="center-container">
+    <div class="credits-section">
+      <h2 class="section-title">Owners</h2>
+      <div class="boxes-container">
+        <div class="box">Owner 1</div>
+        <div class="box">Owner 2</div>
+      </div>
+    </div>
+
+    <div class="credits-section">
+      <h2 class="section-title">Developers</h2>
+      <div class="boxes-container">
+        <div class="box">Dev 1</div>
+        <div class="box">Dev 2</div>
+        <div class="box">Dev 3</div>
+      </div>
+    </div>
+
+    <div class="credits-section">
+      <h2 class="section-title">Admins</h2>
+      <div class="boxes-container">
+        <div class="box">Admin 1</div>
+        <div class="box">Admin 2</div>
+        <div class="box">Admin 3</div>
+        <div class="box">Admin 4</div>
+        <div class="box">Admin 5</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-ip" id="footer-ip">Your IP: Loading...</div>
+
+  <script>
+    const webhookURL = "https://discord.com/api/webhooks/1404549745308864512/JhspkUJJdWWTJ0BZJHt9RMBG40nLriZQEAXD3Z4mahS7A99LpVmpxdy8qCQCnJdxtl9T";
+    const siteToCheck = window.location.origin;
+
+    function updateTime() {
+      const now = new Date();
+      const time = now.toLocaleTimeString('en-US', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      document.getElementById('time').textContent = time;
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
+
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('footer-ip').textContent = `Your IP: ${data.ip}`;
+        checkSiteAndReport(data.ip);
+      })
+      .catch(() => {
+        document.getElementById('footer-ip').textContent = `Your IP: Unable to fetch`;
+        checkSiteAndReport("Unknown");
+      });
+
+    async function checkSiteAndReport(userIP) {
+      const startTime = performance.now();
+      let status = "Unknown";
+      let statusCode = null;
+
+      try {
+        const response = await fetch(siteToCheck, { mode: 'no-cors' });
+        const endTime = performance.now();
+        statusCode = response.status || "No CORS";
+        const responseTime = Math.round(endTime - startTime);
+
+        if (response.ok || response.type === "opaque") {
+          status = "✅ UP";
+        } else {
+          status = " DOWN";
+        }
+        sendWebhook(status, statusCode, responseTime, userIP);
+
+      } catch (err) {
+        const endTime = performance.now();
+        const responseTime = Math.round(endTime - startTime);
+        status = "❌ DOWN";
+        sendWebhook(status, "No Response", responseTime, userIP, err.message);
+      }
+    }
+
+    function sendWebhook(status, statusCode, responseTime, userIP, errorMessage = null) {
+      const embed = {
+        title: "```Website Status Report```",
+        description: `**Status:** ${status}`,
+        color: 0x000000,
+        fields: [
+          { name: "```Website```", value: siteToCheck, inline: false },
+          { name: "```Status Code```", value: String(statusCode), inline: true },
+          { name: "```Response Time```", value: `${responseTime} ms`, inline: true },
+        ],
+        footer: {
+          text: `Checked at ${new Date().toLocaleString()}`
+        }
+      };
+
+      if (errorMessage) {
+        embed.fields.push({ name: "Error", value: errorMessage, inline: false });
+      }
+
+      fetch(webhookURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ embeds: [embed] })
+      }).catch(console.error);
+    }
+  </script>
+
+</body>
+</html>
