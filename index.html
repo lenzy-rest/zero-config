@@ -13,6 +13,7 @@
       flex-direction: column;
       min-height: 100vh;
       color: white;
+      font-family: 'Courier New', monospace;
     }
 
     .taskbar {
@@ -53,23 +54,222 @@
       letter-spacing: 1px;
     }
 
-    .center-container {
+    .content {
+      margin-top: 60px;
+      padding: 20px;
       flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
     }
 
-    .main-text {
+    .header {
       font-family: 'Montserrat', sans-serif;
-      font-size: 6rem;
+      font-size: 3rem;
       font-weight: 700;
       background: linear-gradient(to right, white, black);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-transform: uppercase;
       letter-spacing: 4px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .paste-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .paste-card {
+      background-color: rgba(30, 30, 30, 0.8);
+      border: 1px solid #333;
+      padding: 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .paste-card:hover {
+      border-color: #555;
+      background-color: rgba(50, 50, 50, 0.8);
+    }
+
+    .paste-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #ddd;
+    }
+
+    .paste-date {
+      font-size: 0.8em;
+      color: #777;
+    }
+
+    .paste-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 100;
+      padding: 60px 20px 20px;
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #111;
+      padding: 20px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      color: #777;
+      font-size: 1.5em;
+    }
+
+    .close-modal:hover {
+      color: white;
+    }
+
+    .modal-title {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      color: #ddd;
+    }
+
+    .modal-date {
+      color: #777;
+      margin-bottom: 20px;
+      font-size: 0.9em;
+    }
+
+    .modal-text {
+      white-space: pre-wrap;
+      font-family: 'Courier New', monospace;
+      line-height: 1.5;
+    }
+
+    .login-section {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    .login-btn {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+    }
+
+    .login-btn:hover {
+      background-color: #444;
+    }
+
+    .login-form {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #111;
+      padding: 20px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      z-index: 200;
+    }
+
+    .login-form input {
+      display: block;
+      margin-bottom: 10px;
+      padding: 8px;
+      width: 200px;
+      background-color: #222;
+      border: 1px solid #333;
+      color: white;
+      font-family: 'Courier New', monospace;
+    }
+
+    .login-form button {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      width: 100%;
+    }
+
+    .login-form button:hover {
+      background-color: #444;
+    }
+
+    .add-paste-btn {
+      display: none;
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      margin-bottom: 20px;
+    }
+
+    .add-paste-btn:hover {
+      background-color: #444;
+    }
+
+    .add-paste-form {
+      display: none;
+      background-color: #111;
+      padding: 20px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .add-paste-form input,
+    .add-paste-form textarea {
+      display: block;
+      margin-bottom: 10px;
+      padding: 8px;
+      width: 100%;
+      background-color: #222;
+      border: 1px solid #333;
+      color: white;
+      font-family: 'Courier New', monospace;
+    }
+
+    .add-paste-form textarea {
+      min-height: 200px;
+    }
+
+    .add-paste-form button {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+    }
+
+    .add-paste-form button:hover {
+      background-color: #444;
     }
 
     .footer-ip {
@@ -86,23 +286,200 @@
 
   <div class="taskbar">
     <div class="scam-tag">
-      <a onclick="window.location.reload()">Home</a>
-      <a onclick="window.location.href='/pastes'">Pastes</a>
-      <a onclick="window.location.reload()">Tools</a>
-      <a onclick="window.location.href='/team'">Team</a>
+      <a href="/">Home</a>
+      <a href="/pastes">Pastes</a>
+      <a href="#">Tools</a>
+      <a href="/team">Team</a>
     </div>
     <div class="time" id="time">00:00:00</div>
   </div>
 
-  <div class="center-container">
-    <div class="main-text">Zero Config</div>
+  <div class="content">
+    <div class="header">Pastes</div>
+    
+    <div class="login-section">
+      <button class="login-btn" id="loginBtn">Login</button>
+    </div>
+    
+    <button class="add-paste-btn" id="addPasteBtn">+ Add New Paste</button>
+    
+    <div class="add-paste-form" id="addPasteForm">
+      <input type="text" id="pasteTitle" placeholder="Title">
+      <textarea id="pasteContent" placeholder="Paste content..."></textarea>
+      <button id="submitPaste">Submit Paste</button>
+    </div>
+    
+    <div class="paste-container" id="pasteContainer">
+    </div>
+  </div>
+
+  <div class="paste-modal" id="pasteModal">
+    <div class="modal-content">
+      <span class="close-modal" id="closeModal">&times;</span>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-date" id="modalDate"></div>
+      <div class="modal-text" id="modalText"></div>
+    </div>
+  </div>
+
+  <div class="login-form" id="loginForm">
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button id="submitLogin">Login</button>
   </div>
 
   <div class="footer-ip" id="footer-ip">Your IP: Loading...</div>
 
   <script>
-    const webhookURL = "https://discord.com/api/webhooks/1404549745308864512/JhspkUJJdWWTJ0BZJHt9RMBG40nLriZQEAXD3Z4mahS7A99LpVmpxdy8qCQCnJdxtl9T";
-    const siteToCheck = window.location.origin;
+    const pasteContainer = document.getElementById('pasteContainer');
+    const pasteModal = document.getElementById('pasteModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDate = document.getElementById('modalDate');
+    const modalText = document.getElementById('modalText');
+    const closeModal = document.getElementById('closeModal');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const submitLogin = document.getElementById('submitLogin');
+    const addPasteBtn = document.getElementById('addPasteBtn');
+    const addPasteForm = document.getElementById('addPasteForm');
+    const pasteTitleInput = document.getElementById('pasteTitle');
+    const pasteContentInput = document.getElementById('pasteContent');
+    const submitPaste = document.getElementById('submitPaste');
+
+    let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+    let pastes = JSON.parse(localStorage.getItem('pastes')) || [
+      { id: 1, title: "Welcome to Zero Config", content: "This is a simple pastebin system with zero configuration required. Just login and start sharing your pastes!", date: getCurrentDate() },
+
+    ];
+
+    function getCurrentDate() {
+      return new Date().toISOString().split('T')[0];
+    }
+
+
+    function savePastes() {
+      localStorage.setItem('pastes', JSON.stringify(pastes));
+    }
+
+    function renderPastes() {
+      pasteContainer.innerHTML = '';
+      const sortedPastes = [...pastes].sort((a, b) => new Date(b.date) - new Date(a.date));
+      sortedPastes.forEach(paste => {
+        const pasteCard = document.createElement('div');
+        pasteCard.className = 'paste-card';
+        pasteCard.innerHTML = `
+          <div class="paste-title">${paste.title}</div>
+          <div class="paste-date">${paste.date}</div>
+        `;
+        pasteCard.addEventListener('click', () => openPasteModal(paste));
+        pasteContainer.appendChild(pasteCard);
+      });
+    }
+
+    function openPasteModal(paste) {
+      modalTitle.textContent = paste.title;
+      modalDate.textContent = paste.date;
+      modalText.textContent = paste.content;
+      pasteModal.style.display = 'block';
+    }
+
+    function closePasteModal() {
+      pasteModal.style.display = 'none';
+    }
+
+    function toggleLoginForm() {
+      loginForm.style.display = loginForm.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function handleLogin() {
+      const username = usernameInput.value;
+      const password = passwordInput.value;
+      
+      if (username === 'admin' && password === 'HAHIAJSIAJUN091') {
+        isLoggedIn = true;
+        localStorage.setItem('isLoggedIn', 'true');
+        loginBtn.textContent = 'Logout';
+        addPasteBtn.style.display = 'block';
+        toggleLoginForm();
+        usernameInput.value = '';
+        passwordInput.value = '';
+      } else {
+        alert('Invalid credentials');
+      }
+    }
+
+    function handleLogout() {
+      isLoggedIn = false;
+      localStorage.removeItem('isLoggedIn');
+      loginBtn.textContent = 'Login';
+      addPasteBtn.style.display = 'none';
+      addPasteForm.style.display = 'none';
+    }
+
+    function toggleAddPasteForm() {
+      addPasteForm.style.display = addPasteForm.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function addNewPaste() {
+      const title = pasteTitleInput.value;
+      const content = pasteContentInput.value;
+      
+      if (title && content) {
+        const newPaste = {
+          id: Date.now(), 
+          title: title,
+          content: content,
+          date: getCurrentDate()
+        };
+        
+        pastes.unshift(newPaste);
+        savePastes();
+        renderPastes();
+        pasteTitleInput.value = '';
+        pasteContentInput.value = '';
+        addPasteForm.style.display = 'none';
+      } else {
+        alert('Please fill in both title and content');
+      }
+    }
+
+    function initUI() {
+      if (isLoggedIn) {
+        loginBtn.textContent = 'Logout';
+        addPasteBtn.style.display = 'block';
+      } else {
+        loginBtn.textContent = 'Login';
+        addPasteBtn.style.display = 'none';
+        addPasteForm.style.display = 'none';
+      }
+    }
+
+    closeModal.addEventListener('click', closePasteModal);
+    loginBtn.addEventListener('click', () => {
+      if (isLoggedIn) {
+        handleLogout();
+      } else {
+        toggleLoginForm();
+      }
+    });
+    submitLogin.addEventListener('click', handleLogin);
+    addPasteBtn.addEventListener('click', toggleAddPasteForm);
+    submitPaste.addEventListener('click', addNewPaste);
+
+    window.addEventListener('click', (e) => {
+      if (e.target === pasteModal) {
+        closePasteModal();
+      }
+      if (e.target === loginForm) {
+        toggleLoginForm();
+      }
+    });
+
+    initUI();
+    renderPastes();
 
     function updateTime() {
       const now = new Date();
@@ -121,64 +498,10 @@
       .then(res => res.json())
       .then(data => {
         document.getElementById('footer-ip').textContent = `Your IP: ${data.ip}`;
-        checkSiteAndReport(data.ip);
       })
       .catch(() => {
         document.getElementById('footer-ip').textContent = `Your IP: Unable to fetch`;
-        checkSiteAndReport("Unknown");
       });
-
-    async function checkSiteAndReport(userIP) {
-      const startTime = performance.now();
-      let status = "Unknown";
-      let statusCode = null;
-
-      try {
-        const response = await fetch(siteToCheck, { mode: 'no-cors' });
-        const endTime = performance.now();
-        statusCode = response.status || "No CORS";
-        const responseTime = Math.round(endTime - startTime);
-
-        if (response.ok || response.type === "opaque") {
-          status = "✅ UP";
-        } else {
-          status = " DOWN";
-        }
-        sendWebhook(status, statusCode, responseTime, userIP);
-
-      } catch (err) {
-        const endTime = performance.now();
-        const responseTime = Math.round(endTime - startTime);
-        status = "❌ DOWN";
-        sendWebhook(status, "No Response", responseTime, userIP, err.message);
-      }
-    }
-
-    function sendWebhook(status, statusCode, responseTime, userIP, errorMessage = null) {
-      const embed = {
-        title: "```Website Status Report```",
-        description: `**Status:** ${status}`,
-        color: 0x000000,
-        fields: [
-          { name: "```Website```", value: siteToCheck, inline: false },
-          { name: "```Status Code```", value: String(statusCode), inline: true },
-          { name: "```Response Time```", value: `${responseTime} ms`, inline: true },
-        ],
-        footer: {
-          text: `Checked at ${new Date().toLocaleString()}`
-        }
-      };
-
-      if (errorMessage) {
-        embed.fields.push({ name: "Error", value: errorMessage, inline: false });
-      }
-
-      fetch(webhookURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ embeds: [embed] })
-      }).catch(console.error);
-    }
   </script>
 
 </body>
